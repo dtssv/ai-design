@@ -113,6 +113,8 @@ interface WorkspaceState {
     loadSnapshot: (snapshotId: number) => Promise<void>;
     setSelectedFilePath: (path: string | null) => void;
     setCurrentFilesFromJson: (filesJson: string) => void;
+    updateFileContent: (filePath: string, content: string) => void;
+    saveSnapshotFiles: (snapshotId: number) => Promise<void>;
     fetchGenerationOptions: () => Promise<void>;
     fetchVisibleKnowledgeBases: () => Promise<void>;
 }
@@ -185,6 +187,18 @@ export const useWorkspaceStore = create<WorkspaceState>((set, get) => ({
         } catch {
             set({ currentFiles: [], selectedFilePath: null });
         }
+    },
+
+    updateFileContent: (filePath, content) => {
+        const files = get().currentFiles.map(f =>
+            f.path === filePath ? { ...f, content } : f,
+        );
+        set({ currentFiles: files });
+    },
+
+    saveSnapshotFiles: async (snapshotId) => {
+        const files = get().currentFiles;
+        await request.put(`/snapshots/${snapshotId}/files`, { files });
     },
 
     fetchGenerationOptions: async () => {

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.aicopilot.api.common.exception.BizException;
+import com.aicopilot.api.common.result.ResultCode;
 import com.aicopilot.api.entity.CodeSnapshot;
 import com.aicopilot.api.entity.Conversation;
 import com.aicopilot.api.entity.Message;
@@ -12,6 +14,7 @@ import com.aicopilot.api.mapper.CodeSnapshotMapper;
 import com.aicopilot.api.mapper.ConversationMapper;
 import com.aicopilot.api.mapper.MessageMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ public class ConversationService {
     private final ConversationMapper conversationMapper;
     private final MessageMapper messageMapper;
     private final CodeSnapshotMapper codeSnapshotMapper;
+    private final ObjectMapper objectMapper;
 
     /** 创建会话 */
     public Conversation createConversation(Long workspaceId, String title, String generationMode, Long userId) {
@@ -159,5 +163,20 @@ public class ConversationService {
         // 倒序取的，反转为正序
         java.util.Collections.reverse(all);
         return all;
+    }
+
+    /** 更新快照文件内容（仅修改已有文件内容，不可增删文件） */
+    public void updateSnapshotFiles(Long snapshotId, Object incomingFiles) {
+        CodeSnapshot snapshot = codeSnapshotMapper.selectById(snapshotId);
+        if (snapshot == null) {
+            throw new BizException(ResultCode.DATA_NOT_FOUND);
+        }
+        try {
+            String newFilesJson = objectMapper.writeValueAsString(incomingFiles);
+            snapshot.setFiles(newFilesJson);
+            codeSnapshotMapper.updateById(snapshot);
+        } catch (Exception e) {
+            throw new BizException(ResultCode.FAIL.getCode(), "更新快照文件失败: " + e.getMessage());
+        }
     }
 }

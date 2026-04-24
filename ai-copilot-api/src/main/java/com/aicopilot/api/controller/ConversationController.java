@@ -117,6 +117,14 @@ public class ConversationController {
         return R.ok(snapshot);
     }
 
+    /** 更新快照文件内容（仅修改已有文件内容，不可增删文件） */
+    @PutMapping("/snapshots/{snapshotId}/files")
+    public R<Void> updateSnapshotFiles(@PathVariable Long snapshotId,
+            @RequestBody Map<String, Object> body) {
+        conversationService.updateSnapshotFiles(snapshotId, body.get("files"));
+        return R.ok();
+    }
+
     /** 打包下载快照代码为ZIP（保持路径和分层） */
     @GetMapping("/snapshots/{snapshotId}/download")
     public ResponseEntity<byte[]> downloadSnapshot(@PathVariable Long snapshotId) {

@@ -1,3 +1,4 @@
+import CodeEditor from '@/components/CodeEditor';
 import type { CodeFile } from '@/stores/workspace';
 import { useWorkspaceStore } from '@/stores/workspace';
 import type { SseEventData } from '@/utils/request';
@@ -67,6 +68,7 @@ export default function WorkspaceMain() {
         generationOptions, visibleKnowledgeBases,
         fetchConversations, setCurrentConversation, fetchMessages,
         addMessage, fetchSnapshots, loadSnapshot, setSelectedFilePath,
+        updateFileContent, saveSnapshotFiles,
         fetchGenerationOptions, fetchVisibleKnowledgeBases,
     } = useWorkspaceStore();
 
@@ -214,6 +216,26 @@ export default function WorkspaceMain() {
     const fileTree = useMemo(() => buildFileTree(displayFiles), [displayFiles]);
     const selectedFile = useMemo(() => displayFiles.find(f => f.path === selectedFilePath) || null, [displayFiles, selectedFilePath]);
     const sandboxHtml = useMemo(() => buildSandboxHtml(displayFiles), [displayFiles]);
+
+    // ========== 代码编辑 ==========
+    const isStreaming = streamFiles.length > 0 || generating || upgrading;
+
+    const handleAutoSave = useCallback(
+        (editedFilePath: string, newValue: string) => {
+            // 先更新 store 中的文件内容
+            updateFileContent(editedFilePath, newValue);
+            // 再持久化到后端
+            if (currentSnapshotId) {
+                // 需要在 store 更新后再拿最新 files，这里用 setTimeout 确保 state 已更新
+                setTimeout(() => {
+                    saveSnapshotFiles(currentSnapshotId).catch((err: any) => {
+                        console.error('自动保存失败:', err?.message);
+                    });
+                }, 0);
+            }
+        },
+        [currentSnapshotId, updateFileContent, saveSnapshotFiles],
+    );
 
     const handleDownload = async () => {
         if (currentSnapshotId) {
@@ -555,8 +577,14 @@ export default function WorkspaceMain() {
                         <div className={styles.previewArea}>
                             {selectedFile ? (
                                 <div className={styles.codeViewer}>
-                                    <div className={styles.codeHeader}>{selectedFile.path}</div>
-                                    <pre className={styles.codeContent}>{selectedFile.content}</pre>
+                                    <CodeEditor
+                                        filePath={selectedFile.path}
+                                        language={selectedFile.language}
+                                        value={selectedFile.content}
+                                        readOnly={isStreaming}
+                                        onAutoSave={handleAutoSave}
+                                        autoSaveDelay={10000}
+                                    />
                                 </div>
                             ) : (
                                 <div className={styles.previewEmpty}>
