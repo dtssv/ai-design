@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.User;
+import com.aicopilot.admin.entity.User;
 
 @Mapper
 public interface UserMapper extends BaseMapper<User> {

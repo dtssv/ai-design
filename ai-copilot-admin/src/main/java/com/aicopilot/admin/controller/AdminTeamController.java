@@ -11,13 +11,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.entity.Team;
-import main.java.com.aicopilot.admin.entity.TeamMember;
-import main.java.com.aicopilot.admin.entity.UsageRecord;
-import main.java.com.aicopilot.admin.mapper.TeamMapper;
-import main.java.com.aicopilot.admin.mapper.TeamMemberMapper;
-import main.java.com.aicopilot.admin.mapper.UsageRecordMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.entity.Team;
+import com.aicopilot.admin.entity.TeamMember;
+import com.aicopilot.admin.entity.UsageRecord;
+import com.aicopilot.admin.mapper.TeamMapper;
+import com.aicopilot.admin.mapper.TeamMemberMapper;
+import com.aicopilot.admin.mapper.UsageRecordMapper;
 
 /**
  * 管理端 - 团队管理

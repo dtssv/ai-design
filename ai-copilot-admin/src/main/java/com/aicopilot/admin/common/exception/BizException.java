@@ -1,7 +1,7 @@
 package com.aicopilot.admin.common.exception;
 
 import lombok.Getter;
-import main.java.com.aicopilot.admin.common.result.ResultCode;
+import com.aicopilot.admin.common.result.ResultCode;
 
 /**
  * 业务异常

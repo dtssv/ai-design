@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.OperationLog;
+import com.aicopilot.admin.entity.OperationLog;
 
 @Mapper
 public interface OperationLogMapper extends BaseMapper<OperationLog> {

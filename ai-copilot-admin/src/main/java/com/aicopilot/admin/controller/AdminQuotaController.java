@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.entity.QuotaConfig;
-import main.java.com.aicopilot.admin.mapper.QuotaConfigMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.entity.QuotaConfig;
+import com.aicopilot.admin.mapper.QuotaConfigMapper;
 
 /**
  * 管理端 - 额度与套餐配置

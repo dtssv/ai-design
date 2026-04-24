@@ -80,7 +80,7 @@ ai-design/
 
 - Node.js >= 18
 - Java >= 17
-- PostgreSQL >= 14
+- PostgreSQL >= 14 or MySQL >= 8.0
 - Redis >= 7
 - Maven >= 3.8
 

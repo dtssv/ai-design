@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.TeamMember;
+import com.aicopilot.admin.entity.TeamMember;
 
 @Mapper
 public interface TeamMemberMapper extends BaseMapper<TeamMember> {

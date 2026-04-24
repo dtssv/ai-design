@@ -1,7 +1,7 @@
 package com.aicopilot.admin.common.exception;
 
-import java.net.BindException;
-import java.nio.file.AccessDeniedException;
+import org.springframework.validation.BindException;
+import org.springframework.security.access.AccessDeniedException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.common.result.ResultCode;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.common.result.ResultCode;
 
 /**
  * 全局异常处理器
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     public R<?> handleBindException(BindException e) {
-        String message = e.getFieldErrors().stream()
+        String message = e.getBindingResult().getFieldErrors().stream()
                 .map(f -> f.getField() + ": " + f.getDefaultMessage())
                 .reduce((a, b) -> a + "; " + b)
                 .orElse("参数绑定失败");

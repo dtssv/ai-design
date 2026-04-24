@@ -10,9 +10,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.entity.ApiKey;
-import main.java.com.aicopilot.admin.mapper.ApiKeyMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.entity.ApiKey;
+import com.aicopilot.admin.mapper.ApiKeyMapper;
 
 /**
  * 管理端 - API-Key 池管理

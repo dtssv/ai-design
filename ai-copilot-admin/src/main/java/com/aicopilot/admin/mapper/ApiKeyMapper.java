@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.ApiKey;
+import com.aicopilot.admin.entity.ApiKey;
 
 @Mapper
 public interface ApiKeyMapper extends BaseMapper<ApiKey> {

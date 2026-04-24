@@ -12,12 +12,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.common.security.SecurityUtil;
-import main.java.com.aicopilot.admin.entity.KnowledgeBase;
-import main.java.com.aicopilot.admin.entity.KnowledgeEntry;
-import main.java.com.aicopilot.admin.mapper.KnowledgeBaseMapper;
-import main.java.com.aicopilot.admin.mapper.KnowledgeEntryMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.common.security.SecurityUtil;
+import com.aicopilot.admin.entity.KnowledgeBase;
+import com.aicopilot.admin.entity.KnowledgeEntry;
+import com.aicopilot.admin.mapper.KnowledgeBaseMapper;
+import com.aicopilot.admin.mapper.KnowledgeEntryMapper;
 
 /**
  * 管理端 - 知识库审核管理 + 平台知识库维护

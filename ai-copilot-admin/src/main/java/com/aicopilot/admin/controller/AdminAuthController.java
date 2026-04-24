@@ -7,12 +7,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.common.security.SecurityUtil;
-import main.java.com.aicopilot.admin.dto.LoginRequest;
-import main.java.com.aicopilot.admin.entity.User;
-import main.java.com.aicopilot.admin.mapper.UserMapper;
-import main.java.com.aicopilot.admin.service.AdminAuthService;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.common.security.SecurityUtil;
+import com.aicopilot.admin.dto.LoginRequest;
+import com.aicopilot.admin.entity.User;
+import com.aicopilot.admin.mapper.UserMapper;
+import com.aicopilot.admin.service.AdminAuthService;
 
 /**
  * 管理端 - 管理员认证

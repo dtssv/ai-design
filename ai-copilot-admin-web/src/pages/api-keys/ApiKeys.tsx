@@ -10,7 +10,7 @@ export default function ApiKeys() {
     const [form, setForm] = useState({ provider: '', keyValue: '', dailyLimit: 1000 });
 
     const fetchList = () => {
-        request.get('/api-keys/pool', { params: { page, size: 20, provider: provider || undefined } })
+        request.get('/api-keys', { params: { page, size: 20, provider: provider || undefined } })
             .then((res: any) => { setList(res.data.items); setTotal(res.data.total); });
     };
 

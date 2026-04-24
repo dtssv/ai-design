@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.common.security.SecurityUtil;
-import main.java.com.aicopilot.admin.entity.SystemConfig;
-import main.java.com.aicopilot.admin.mapper.SystemConfigMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.common.security.SecurityUtil;
+import com.aicopilot.admin.entity.SystemConfig;
+import com.aicopilot.admin.mapper.SystemConfigMapper;
 
 /**
  * 管理端 - 系统配置管理

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.result.R;
-import main.java.com.aicopilot.admin.entity.UsageRecord;
-import main.java.com.aicopilot.admin.entity.User;
-import main.java.com.aicopilot.admin.mapper.TeamMapper;
-import main.java.com.aicopilot.admin.mapper.UsageRecordMapper;
-import main.java.com.aicopilot.admin.mapper.UserMapper;
-import main.java.com.aicopilot.admin.mapper.WorkspaceMapper;
+import com.aicopilot.admin.common.result.R;
+import com.aicopilot.admin.entity.UsageRecord;
+import com.aicopilot.admin.entity.User;
+import com.aicopilot.admin.mapper.TeamMapper;
+import com.aicopilot.admin.mapper.UsageRecordMapper;
+import com.aicopilot.admin.mapper.UserMapper;
+import com.aicopilot.admin.mapper.WorkspaceMapper;
 
 /**
  * 管理端 - 数据看板接口

@@ -7,12 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import main.java.com.aicopilot.admin.common.exception.BizException;
-import main.java.com.aicopilot.admin.common.result.ResultCode;
-import main.java.com.aicopilot.admin.common.security.JwtUtil;
-import main.java.com.aicopilot.admin.dto.LoginRequest;
-import main.java.com.aicopilot.admin.entity.User;
-import main.java.com.aicopilot.admin.mapper.UserMapper;
+import com.aicopilot.admin.common.exception.BizException;
+import com.aicopilot.admin.common.result.ResultCode;
+import com.aicopilot.admin.common.security.JwtUtil;
+import com.aicopilot.admin.dto.LoginRequest;
+import com.aicopilot.admin.entity.User;
+import com.aicopilot.admin.mapper.UserMapper;
 
 /**
  * 管理员认证服务

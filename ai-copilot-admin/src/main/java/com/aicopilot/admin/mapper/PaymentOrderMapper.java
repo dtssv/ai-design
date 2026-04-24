@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.PaymentOrder;
+import com.aicopilot.admin.entity.PaymentOrder;
 
 @Mapper
 public interface PaymentOrderMapper extends BaseMapper<PaymentOrder> {

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import main.java.com.aicopilot.admin.common.base.BaseEntity;
+import com.aicopilot.admin.common.base.BaseEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)

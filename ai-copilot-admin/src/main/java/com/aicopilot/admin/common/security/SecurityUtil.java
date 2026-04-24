@@ -3,8 +3,8 @@ package com.aicopilot.admin.common.security;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import main.java.com.aicopilot.admin.common.exception.BizException;
-import main.java.com.aicopilot.admin.common.result.ResultCode;
+import com.aicopilot.admin.common.exception.BizException;
+import com.aicopilot.admin.common.result.ResultCode;
 
 /**
  * 安全上下文工具类

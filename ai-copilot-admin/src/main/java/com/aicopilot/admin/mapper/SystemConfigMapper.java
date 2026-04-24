@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import main.java.com.aicopilot.admin.entity.SystemConfig;
+import com.aicopilot.admin.entity.SystemConfig;
 
 @Mapper
 public interface SystemConfigMapper extends BaseMapper<SystemConfig> {
