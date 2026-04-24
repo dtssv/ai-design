@@ -991,3 +991,51 @@
     color: var(--primary);
     font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
+
+/* ========== 切换模式按钮 ========== */
+.upgradeBtn {
+    padding: 4px 10px;
+    font-size: 12px;
+    border: 1px solid #f59e0b;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.upgradeBtn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+}
+
+.upgradeBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========== 模式标识 ========== */
+.modeBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    margin-left: 8px;
+}
+
+.modeBadgePrototype {
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.modeBadgeDev {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}

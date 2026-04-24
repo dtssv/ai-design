@@ -102,7 +102,7 @@ public class AiGenerationService {
      * 原型转开发模式（SSE流式）
      */
     public SseEmitter upgradeToDevMode(Long conversationId, Long userId) {
-        SseEmitter emitter = new SseEmitter((long) timeoutSeconds * 1000);
+        SseEmitter emitter = new SseEmitter((long) timeoutSeconds * 30000);
 
         CompletableFuture.runAsync(() -> {
             try {

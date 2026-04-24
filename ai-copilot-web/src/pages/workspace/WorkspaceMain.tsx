@@ -76,6 +76,9 @@ export default function WorkspaceMain() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
+    // ========== 切换模式（原型→开发） ==========
+    const [upgrading, setUpgrading] = useState(false);
+
     // ========== 右侧面板 Tab ==========
     const [rightTab, setRightTab] = useState<'code' | 'preview'>('code');
 
@@ -225,6 +228,54 @@ export default function WorkspaceMain() {
         if (iframeRef.current && sandboxHtml) iframeRef.current.srcdoc = sandboxHtml;
     };
 
+    // ========== 切换模式：原型 → 开发 ==========
+    const isPrototypeMode = currentConversation?.generationMode === 'prototype';
+
+    const handleUpgradeToDevMode = useCallback(async () => {
+        if (!currentConversation || upgrading || generating) return;
+        if (!confirm('确认将当前版本代码切换为开发模式？切换后无法恢复为原型模式。')) return;
+
+        const convId = currentConversation.id;
+        setUpgrading(true);
+        setStreamText('');
+        setStreamFiles([]);
+
+        let fullText = '';
+        fetchSSE(
+            `/conversations/${convId}/upgrade`,
+            {},
+            (event: SseEventData) => {
+                if (event.type === 'text_delta' && event.content) {
+                    fullText += event.content;
+                    setStreamText(fullText);
+                } else if (event.type === 'done') {
+                    addMessage({
+                        id: event.messageId || Date.now() + 1,
+                        conversationId: convId,
+                        role: 'assistant',
+                        content: fullText,
+                        codeSnapshotId: event.snapshotId,
+                        tokenUsage: event.tokenUsage,
+                        modelUsed: event.model,
+                        createdAt: new Date().toISOString(),
+                    });
+                    setStreamText('');
+                    setUpgrading(false);
+                    setStreamFiles([]);
+                    // 刷新对话列表（mode 已变更）和快照
+                    fetchConversations(Number(id));
+                    fetchSnapshots(convId).then(() => {
+                        if (event.snapshotId) loadSnapshot(event.snapshotId);
+                    });
+                    // 更新当前 conversation 的 mode
+                    setCurrentConversation({ ...currentConversation, generationMode: 'development' });
+                }
+            },
+            () => setUpgrading(false),
+            () => setUpgrading(false),
+        );
+    }, [currentConversation, upgrading, generating, id]);
+
     // ========== 分享功能 ==========
     const [shareModalOpen, setShareModalOpen] = useState(false);
     const [shareInfo, setShareInfo] = useState<ShareInfo | null>(null);
@@ -315,7 +366,7 @@ export default function WorkspaceMain() {
                             </div>
                         </div>
                     ))}
-                    {generating && streamText && (
+                    {(generating || upgrading) && streamText && (
                         <div className={`${styles.message} ${styles.messageAi}`}>
                             <div className={styles.messageAvatar}>AI</div>
                             <div className={styles.messageBubble}>
@@ -466,6 +517,9 @@ export default function WorkspaceMain() {
                             {snapshots.map(s => <option key={s.id} value={s.id}>v{s.version} · {s.fileCount}文件 · {new Date(s.createdAt).toLocaleString()}</option>)}
                             {snapshots.length === 0 && <option value="">暂无版本</option>}
                         </select>
+                        <span className={`${styles.modeBadge} ${isPrototypeMode ? styles.modeBadgePrototype : styles.modeBadgeDev}`}>
+                            {isPrototypeMode ? '原型模式' : '开发模式'}
+                        </span>
                     </div>
                     <div className={styles.toolbarActions}>
                         {rightTab === 'preview' && (
@@ -473,6 +527,16 @@ export default function WorkspaceMain() {
                         )}
                         <button className="btn-outline" style={{ padding: '4px 10px', fontSize: 12 }} onClick={handleDownload} disabled={!currentSnapshotId}>下载ZIP</button>
                         <button className="btn-outline" style={{ padding: '4px 10px', fontSize: 12 }} onClick={handleShare} disabled={!currentSnapshotId && snapshots.length === 0}>分享</button>
+                        {isPrototypeMode && currentSnapshotId && (
+                            <button
+                                className={`${styles.upgradeBtn}`}
+                                style={{ padding: '4px 10px', fontSize: 12 }}
+                                onClick={handleUpgradeToDevMode}
+                                disabled={upgrading || generating}
+                            >
+                                {upgrading ? '切换中...' : '切换为开发模式'}
+                            </button>
+                        )}
                     </div>
                 </div>
 
