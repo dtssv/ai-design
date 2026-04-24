@@ -16,8 +16,6 @@ export default function SharePreview() {
     const [data, setData] = useState<ShareData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [tab, setTab] = useState<'preview' | 'code'>('preview');
-    const [selectedFilePath, setSelectedFilePath] = useState<string | null>(null);
     const iframeRef = useRef<HTMLIFrameElement>(null);
 
     useEffect(() => {
@@ -31,7 +29,6 @@ export default function SharePreview() {
             })
             .then((d: ShareData) => {
                 setData(d);
-                if (d.files?.length > 0) setSelectedFilePath(d.files[0].path);
             })
             .catch((err) => setError(err.message || '加载失败'))
             .finally(() => setLoading(false));
@@ -42,15 +39,6 @@ export default function SharePreview() {
         return buildSandboxHtml(data.files);
     }, [data?.files]);
 
-    const selectedFile = useMemo(
-        () => data?.files?.find((f) => f.path === selectedFilePath) || null,
-        [data?.files, selectedFilePath],
-    );
-
-    const fileTree = useMemo(() => {
-        if (!data?.files) return [];
-        return buildFileTree(data.files);
-    }, [data?.files]);
 
     if (loading) {
         return (
@@ -105,81 +93,6 @@ export default function SharePreview() {
                     </div>
                 )}
             </div>
-        </div>
-    );
-}
-
-// ===================== 文件树 =====================
-interface TreeNode {
-    name: string;
-    path: string;
-    isDir: boolean;
-    children: TreeNode[];
-}
-
-function buildFileTree(files: CodeFile[]): TreeNode[] {
-    const root: TreeNode[] = [];
-    for (const file of files) {
-        const parts = file.path.split('/');
-        let current = root;
-        let pathSoFar = '';
-        for (let i = 0; i < parts.length; i++) {
-            pathSoFar += (i > 0 ? '/' : '') + parts[i];
-            const isLast = i === parts.length - 1;
-            let existing = current.find((n) => n.name === parts[i] && n.isDir === !isLast);
-            if (!existing) {
-                existing = { name: parts[i], path: pathSoFar, isDir: !isLast, children: [] };
-                current.push(existing);
-            }
-            current = existing.children;
-        }
-    }
-    return root;
-}
-
-function FileNode({
-    node,
-    selectedPath,
-    onSelect,
-    depth = 0,
-}: {
-    node: TreeNode;
-    selectedPath: string | null;
-    onSelect: (p: string) => void;
-    depth?: number;
-}) {
-    const [open, setOpen] = useState(true);
-    if (node.isDir) {
-        return (
-            <div>
-                <div
-                    className={styles.treeDir}
-                    style={{ paddingLeft: 8 + depth * 14 }}
-                    onClick={() => setOpen(!open)}
-                >
-                    <span className={styles.treeDirIcon}>{open ? '\u25BE' : '\u25B8'}</span>
-                    <span>{node.name}</span>
-                </div>
-                {open &&
-                    node.children.map((c) => (
-                        <FileNode
-                            key={c.path}
-                            node={c}
-                            selectedPath={selectedPath}
-                            onSelect={onSelect}
-                            depth={depth + 1}
-                        />
-                    ))}
-            </div>
-        );
-    }
-    return (
-        <div
-            className={`${styles.treeFile} ${selectedPath === node.path ? styles.treeFileActive : ''}`}
-            style={{ paddingLeft: 22 + depth * 14 }}
-            onClick={() => onSelect(node.path)}
-        >
-            {node.name}
         </div>
     );
 }
