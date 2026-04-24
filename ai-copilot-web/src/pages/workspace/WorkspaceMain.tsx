@@ -12,6 +12,7 @@ interface ShareInfo {
     shareToken: string;
     shareUrl: string;
     mcpEndpoint: string;
+    mcpToken: string;
     snapshotId?: number;
     version?: number;
 }
@@ -242,12 +243,13 @@ export default function WorkspaceMain() {
             const res: any = await request.post(`/workspaces/${id}/share`, payload);
             const data = res.data;
             const origin = window.location.origin;
-            // 全局 MCP 服务端点（与具体分享无关，一次配置即可）
-            const mcpEndpointUrl = `${origin}/api/v1/mcp`;
+            // 带用户 MCP 令牌的 MCP 服务端点（绑定到当前用户）
+            const mcpEndpointUrl = `${origin}/api/v1/mcp/${data.mcpToken}`;
             setShareInfo({
                 shareToken: data.shareToken,
                 shareUrl: `${origin}/share/${data.shareToken}`,
                 mcpEndpoint: mcpEndpointUrl,
+                mcpToken: data.mcpToken,
                 snapshotId: data.snapshotId,
                 version: data.version,
             });
@@ -572,7 +574,7 @@ export default function WorkspaceMain() {
                                         通过 MCP 获取代码
                                     </div>
                                     <p className={styles.shareSectionDesc}>
-                                        将上方预览链接发送给已配置 MCP 服务的 AI 助手，即可自动获取代码文件。
+                                        将上方预览链接发送给已配置 MCP 服务的 AI 助手，即可自动获取代码文件。MCP 端点已绑定你的个人身份，仅可获取你分享的代码。
                                     </p>
 
                                     {/* MCP 配置说明 */}
@@ -581,9 +583,9 @@ export default function WorkspaceMain() {
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
                                             </svg>
-                                            MCP 服务配置（一次配置，长期使用）
+                                            MCP 服务配置（绑定你的个人令牌，一次配置）
                                         </div>
-                                        <p className={styles.mcpConfigDesc}>在 Cursor、Claude Desktop 等工具的 MCP 配置中添加：</p>
+                                        <p className={styles.mcpConfigDesc}>在 Cursor、Claude Desktop 等工具的 MCP 配置中添加（请勿泄露此地址）：</p>
                                         <pre className={styles.mcpConfigCode}>{`{
   "mcpServers": {
     "ai-copilot": {

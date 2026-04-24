@@ -54,22 +54,20 @@ public class ShareController {
     // ========== 标准 MCP 协议端点 (Streamable HTTP) ==========
 
     /**
-     * MCP Streamable HTTP 全局端点（公开接口，无需登录）
-     * POST /mcp
+     * MCP Streamable HTTP 端点（公开接口，无需登录）
+     * POST /mcp/{mcpToken}
      *
-     * 用户只需配置一次此端点，通过 get_code 工具的 share_url 参数指定分享链接。
-     * 接收 JSON-RPC 2.0 请求，支持:
-     * - initialize: 协议握手
-     * - notifications/initialized: 初始化完成通知
-     * - tools/list: 列出可用工具 (get_code)
-     * - tools/call: 调用工具获取代码（需传入 share_url）
+     * mcpToken 为用户级令牌，绑定到具体用户。
+     * 配置示例：{ "url": "https://xxx/api/v1/mcp/{your-mcp-token}" }
+     * 通过 get_code 工具的 share_url 参数指定分享链接，后端校验该分享是否由 mcpToken 对应用户创建。
      */
-    @PostMapping(value = "/mcp", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/mcp/{mcpToken}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> mcpEndpoint(
+            @PathVariable String mcpToken,
             @RequestBody Map<String, Object> body) {
-        log.debug("MCP request received, method: {}", body.get("method"));
+        log.debug("MCP request received, mcpToken: {}, method: {}", mcpToken, body.get("method"));
 
-        Map<String, Object> response = mcpProtocolHandler.handleRequest(body);
+        Map<String, Object> response = mcpProtocolHandler.handleRequest(body, mcpToken);
 
         if (response == null) {
             return ResponseEntity.accepted().build();

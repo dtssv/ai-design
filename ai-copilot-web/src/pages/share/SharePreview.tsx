@@ -85,70 +85,26 @@ export default function SharePreview() {
                     <span className={styles.headerTitle}>{data.workspaceName}</span>
                     <span className={styles.headerVersion}>v{data.version}</span>
                 </div>
-                <div className={styles.headerTabs}>
-                    <button
-                        className={`${styles.headerTab} ${tab === 'preview' ? styles.headerTabActive : ''}`}
-                        onClick={() => setTab('preview')}
-                    >
-                        预览
-                    </button>
-                    <button
-                        className={`${styles.headerTab} ${tab === 'code' ? styles.headerTabActive : ''}`}
-                        onClick={() => setTab('code')}
-                    >
-                        代码
-                    </button>
-                </div>
                 <div className={styles.headerRight}>
                     <span className={styles.headerPowered}>AI Copilot 分享</span>
                 </div>
             </div>
 
             {/* 内容区域 */}
-            {tab === 'preview' ? (
-                <div className={styles.previewArea}>
-                    {sandboxHtml ? (
-                        <iframe
-                            ref={iframeRef}
-                            srcDoc={sandboxHtml}
-                            className={styles.iframe}
-                            sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups"
-                        />
-                    ) : (
-                        <div className={styles.empty}>
-                            <p>暂无可预览的内容</p>
-                        </div>
-                    )}
-                </div>
-            ) : (
-                <div className={styles.codeLayout}>
-                    <div className={styles.filePanel}>
-                        <div className={styles.filePanelHeader}>文件</div>
-                        <div className={styles.fileList}>
-                            {fileTree.map((n) => (
-                                <FileNode
-                                    key={n.path}
-                                    node={n}
-                                    selectedPath={selectedFilePath}
-                                    onSelect={setSelectedFilePath}
-                                />
-                            ))}
-                        </div>
+            <div className={styles.previewArea}>
+                {sandboxHtml ? (
+                    <iframe
+                        ref={iframeRef}
+                        srcDoc={sandboxHtml}
+                        className={styles.iframe}
+                        sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups"
+                    />
+                ) : (
+                    <div className={styles.empty}>
+                        <p>暂无可预览的内容</p>
                     </div>
-                    <div className={styles.codeArea}>
-                        {selectedFile ? (
-                            <div className={styles.codeViewer}>
-                                <div className={styles.codeHeader}>{selectedFile.path}</div>
-                                <pre className={styles.codeContent}>{selectedFile.content}</pre>
-                            </div>
-                        ) : (
-                            <div className={styles.empty}>
-                                <p>选择左侧文件查看代码</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 }
