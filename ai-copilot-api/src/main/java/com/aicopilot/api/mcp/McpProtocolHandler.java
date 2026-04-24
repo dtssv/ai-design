@@ -40,9 +40,12 @@ public class McpProtocolHandler {
 
     /**
      * 处理 JSON-RPC 2.0 请求
+     * 
+     * @param requestBody JSON-RPC 请求体
+     * @param mcpToken    URL 路径中的用户 MCP 令牌，用于鉴权
      */
     @SuppressWarnings("unchecked")
-    public Map<String, Object> handleRequest(Map<String, Object> requestBody) {
+    public Map<String, Object> handleRequest(Map<String, Object> requestBody, String mcpToken) {
         String jsonrpc = (String) requestBody.get("jsonrpc");
         String method = (String) requestBody.get("method");
         Object id = requestBody.get("id");
@@ -65,7 +68,7 @@ public class McpProtocolHandler {
         return switch (method) {
             case "initialize" -> handleInitialize(id);
             case "tools/list" -> handleToolsList(id);
-            case "tools/call" -> handleToolsCall(id, params);
+            case "tools/call" -> handleToolsCall(id, params, mcpToken);
             default -> buildError(id, -32601, "Method not found: " + method);
         };
     }
@@ -96,7 +99,7 @@ public class McpProtocolHandler {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> handleToolsCall(Object id, Map<String, Object> params) {
+    private Map<String, Object> handleToolsCall(Object id, Map<String, Object> params, String mcpToken) {
         String toolName = (String) params.get("name");
         Map<String, Object> arguments = (Map<String, Object>) params.getOrDefault("arguments", Map.of());
 
@@ -126,9 +129,9 @@ public class McpProtocolHandler {
                 } else {
                     version = Integer.parseInt(versionObj.toString());
                 }
-                codeResult = shareService.getMcpVersionCode(token, version);
+                codeResult = shareService.getMcpVersionCodeByMcpToken(mcpToken, token, version);
             } else {
-                codeResult = shareService.getMcpLatestCode(token);
+                codeResult = shareService.getMcpLatestCodeByMcpToken(mcpToken, token);
             }
 
             String content = objectMapper.writeValueAsString(codeResult);

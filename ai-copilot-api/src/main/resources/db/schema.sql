@@ -14,6 +14,7 @@ CREATE TABLE users (
     status VARCHAR(20) NOT NULL DEFAULT 'active' COMMENT '状态: active/disabled',
     free_quota_used INT NOT NULL DEFAULT 0 COMMENT '当月已用免费额度(token)',
     free_quota_reset_at DATETIME COMMENT '额度重置时间',
+    mcp_token VARCHAR(64) UNIQUE COMMENT '用户MCP令牌，用于MCP服务端点身份绑定',
     deleted TINYINT NOT NULL DEFAULT 0 COMMENT '逻辑删除',
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

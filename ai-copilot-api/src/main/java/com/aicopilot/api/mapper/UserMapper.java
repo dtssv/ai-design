@@ -12,4 +12,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select("SELECT * FROM users WHERE (email = #{account} OR phone = #{account}) AND deleted = 0 LIMIT 1")
     User findByAccount(@Param("account") String account);
+
+    @Select("SELECT * FROM users WHERE mcp_token = #{mcpToken} AND deleted = 0 LIMIT 1")
+    User findByMcpToken(@Param("mcpToken") String mcpToken);
 }

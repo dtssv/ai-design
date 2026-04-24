@@ -982,3 +982,12 @@
     color: var(--primary);
     font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
 }
+
+.mcpInlineCode {
+    font-size: 11px;
+    padding: 1px 5px;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 4px;
+    color: var(--primary);
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+}

@@ -562,27 +562,18 @@ export default function WorkspaceMain() {
                                     </div>
                                 </div>
 
-                                {/* MCP 链接 */}
+                                {/* MCP 服务 */}
                                 <div className={styles.shareSection}>
                                     <div className={styles.shareSectionTitle}>
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                             <rect x="2" y="3" width="20" height="14" rx="2" />
                                             <line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
                                         </svg>
-                                        MCP 工具链接
+                                        通过 MCP 获取代码
                                     </div>
                                     <p className={styles.shareSectionDesc}>
-                                        标准 MCP 协议端点（Streamable HTTP），支持通过 tools/call 调用 get_code 工具{shareInfo.version ? `（默认版本 v${shareInfo.version}）` : ''}
+                                        将上方预览链接发送给已配置 MCP 服务的 AI 助手，即可自动获取代码文件。
                                     </p>
-                                    <div className={styles.shareLinkRow}>
-                                        <input className={styles.shareLinkInput} readOnly value={shareInfo.mcpEndpoint} />
-                                        <button
-                                            className={`btn-primary ${styles.shareCopyBtn}`}
-                                            onClick={() => handleCopyLink(shareInfo.mcpEndpoint, 'mcp')}
-                                        >
-                                            {shareCopied === 'mcp' ? '已复制' : '复制'}
-                                        </button>
-                                    </div>
 
                                     {/* MCP 配置说明 */}
                                     <div className={styles.mcpConfigGuide}>
@@ -590,9 +581,9 @@ export default function WorkspaceMain() {
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
                                             </svg>
-                                            如何配置
+                                            MCP 服务配置（一次配置，长期使用）
                                         </div>
-                                        <p className={styles.mcpConfigDesc}>在 MCP 客户端配置文件中添加以下内容：</p>
+                                        <p className={styles.mcpConfigDesc}>在 Cursor、Claude Desktop 等工具的 MCP 配置中添加：</p>
                                         <pre className={styles.mcpConfigCode}>{`{
   "mcpServers": {
     "ai-copilot": {
@@ -600,37 +591,24 @@ export default function WorkspaceMain() {
     }
   }
 }`}</pre>
-                                        <p className={styles.mcpConfigDesc}>配置完成后，AI 助手将自动识别 <strong>get_code</strong> 工具，可获取代码文件。</p>
-                                        <details className={styles.mcpConfigDetails}>
-                                            <summary className={styles.mcpConfigSummary}>工具说明 &amp; 手动调用示例</summary>
-                                            <div className={styles.mcpConfigDetailBody}>
-                                                <p className={styles.mcpConfigDetailLabel}>提供工具：</p>
-                                                <ul className={styles.mcpConfigToolList}>
-                                                    <li><code>get_code</code> — 获取代码文件列表，含文件路径、语言和内容</li>
-                                                    <li>参数 <code>version</code>（可选）— 指定版本号，不传则获取最新版本</li>
-                                                </ul>
-                                                <p className={styles.mcpConfigDetailLabel}>手动调用示例（POST 请求）：</p>
-                                                <pre className={styles.mcpConfigCode}>{`// 获取最新版本代码
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "get_code",
-    "arguments": {}
-  }
-}
+                                        <div className={styles.mcpConfigTitle} style={{ marginTop: 12 }}>
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10" />
+                                            </svg>
+                                            使用方式
+                                        </div>
+                                        <p className={styles.mcpConfigDesc}>配置完成后，直接将分享链接发给 AI 助手即可：</p>
+                                        <pre className={styles.mcpConfigCode}>{`帮我获取这个链接的代码：${shareInfo.shareUrl}`}</pre>
+                                        <p className={styles.mcpConfigDesc}>AI 助手会自动调用 <code className={styles.mcpInlineCode}>get_code</code> 工具，通过分享链接获取代码文件。</p>
 
-// 获取指定版本代码
-{
-  "jsonrpc": "2.0",
-  "id": 1,
-  "method": "tools/call",
-  "params": {
-    "name": "get_code",
-    "arguments": { "version": ${shareInfo.version || 1} }
-  }
-}`}</pre>
+                                        <details className={styles.mcpConfigDetails}>
+                                            <summary className={styles.mcpConfigSummary}>工具参数说明</summary>
+                                            <div className={styles.mcpConfigDetailBody}>
+                                                <ul className={styles.mcpConfigToolList}>
+                                                    <li><code>get_code</code> — 根据分享链接获取代码文件</li>
+                                                    <li><code>share_url</code>（必填）— 分享链接地址</li>
+                                                    <li><code>version</code>（可选）— 版本号，不传则获取最新版本</li>
+                                                </ul>
                                             </div>
                                         </details>
                                     </div>

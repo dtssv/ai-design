@@ -26,4 +26,6 @@ public class User extends BaseEntity {
     private Integer freeQuotaUsed;
     /** 额度重置时间 */
     private LocalDateTime freeQuotaResetAt;
+    /** 用户MCP令牌，用于MCP服务端点身份绑定 */
+    private String mcpToken;
 }
